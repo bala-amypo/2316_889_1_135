@@ -12,36 +12,36 @@ import java.time.LocalDateTime;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; [cite: 41]
+    private Long id;
 
     @Column(nullable = false)
-    private String title; [cite: 42]
+    private String title;
 
     @Column(nullable = false)
-    private String description; [cite: 43]
+    private String description;
 
     @Column(nullable = false)
-    private String location; [cite: 44]
+    private String location;
 
-    private String category; [cite: 45]
+    private String category;
 
     @ManyToOne
     @JoinColumn(name = "publisher_id", nullable = false)
-    private User publisher; [cite: 46]
+    private User publisher;
 
-    private Boolean isActive = true; [cite: 47, 53]
+    private Boolean isActive = true;
 
-    private LocalDateTime createdAt; [cite: 48]
-    private LocalDateTime lastUpdatedAt; [cite: 49]
+    private LocalDateTime createdAt;
+    private LocalDateTime lastUpdatedAt;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now(); [cite: 55]
-        this.lastUpdatedAt = LocalDateTime.now(); [cite: 56]
+        this.createdAt = LocalDateTime.now();
+        this.lastUpdatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.lastUpdatedAt = LocalDateTime.now(); [cite: 56]
+        this.lastUpdatedAt = LocalDateTime.now();
     }
 }

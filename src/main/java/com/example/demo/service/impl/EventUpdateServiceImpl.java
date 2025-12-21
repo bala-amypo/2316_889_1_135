@@ -15,7 +15,7 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     private final EventRepository eventRepository;
     private final BroadcastService broadcastService;
 
-    // Strict constructor order: EventUpdateRepository, EventRepository, BroadcastService [cite: 206]
+    // Constructor injection in exact order: Repository, Repository, Service
     public EventUpdateServiceImpl(EventUpdateRepository eventUpdateRepository, 
                                   EventRepository eventRepository, 
                                   BroadcastService broadcastService) {
@@ -26,23 +26,23 @@ public class EventUpdateServiceImpl implements EventUpdateService {
 
     @Override
     public EventUpdate publishUpdate(EventUpdate update) {
-        EventUpdate savedUpdate = eventUpdateRepository.save(update); [cite: 208]
-        broadcastService.broadcastUpdate(savedUpdate.getId()); [cite: 208]
+        EventUpdate savedUpdate = eventUpdateRepository.save(update);
+        broadcastService.broadcastUpdate(savedUpdate.getId());
         return savedUpdate;
     }
 
     @Override
     public List<EventUpdate> getUpdatesForEvent(Long eventId) {
-        return eventUpdateRepository.findByEventId(eventId); [cite: 209]
+        return eventUpdateRepository.findByEventId(eventId);
     }
 
     @Override
     public Optional<EventUpdate> getUpdateById(Long id) {
-        return eventUpdateRepository.findById(id); [cite: 210]
+        return eventUpdateRepository.findById(id);
     }
 
     @Override
     public List<EventUpdate> getAllUpdates() {
-        return eventUpdateRepository.findAll(); [cite: 211]
+        return eventUpdateRepository.findAll();
     }
 }
