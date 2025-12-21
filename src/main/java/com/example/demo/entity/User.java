@@ -1,52 +1,33 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
+import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "users")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String fullName;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
-    private String role;
-    private Instant createdAt;
 
-    public User() {}
+    @Column(nullable = false)
+    private String role = "SUBSCRIBER";
 
-    public User(Long id, String fullName, String email, String password, String role) {
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
+    private LocalDateTime createdAt;
 
     @PrePersist
-    public void onCreate() {
-        this.createdAt = Instant.now();
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
-
-    // getters & setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
-
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
-
-    public Instant getCreatedAt() { return createdAt; }
 }
