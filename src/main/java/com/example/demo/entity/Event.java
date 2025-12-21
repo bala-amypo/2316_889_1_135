@@ -6,32 +6,42 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "events")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    private String description;
-    private String location;
-    private String category;
-    private Boolean isActive = true;
+    private Long id; [cite: 41]
+
+    @Column(nullable = false)
+    private String title; [cite: 42]
+
+    @Column(nullable = false)
+    private String description; [cite: 43]
+
+    @Column(nullable = false)
+    private String location; [cite: 44]
+
+    private String category; [cite: 45]
 
     @ManyToOne
     @JoinColumn(name = "publisher_id", nullable = false)
-    private User publisher;
+    private User publisher; [cite: 46]
 
-    private LocalDateTime createdAt;
-    private LocalDateTime lastUpdatedAt;
+    private Boolean isActive = true; [cite: 47, 53]
+
+    private LocalDateTime createdAt; [cite: 48]
+    private LocalDateTime lastUpdatedAt; [cite: 49]
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.lastUpdatedAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now(); [cite: 55]
+        this.lastUpdatedAt = LocalDateTime.now(); [cite: 56]
     }
 
     @PreUpdate
     protected void onUpdate() {
-        this.lastUpdatedAt = LocalDateTime.now();
+        this.lastUpdatedAt = LocalDateTime.now(); [cite: 56]
     }
 }
