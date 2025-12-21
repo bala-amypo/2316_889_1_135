@@ -1,37 +1,33 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
+import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "event_updates")
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class EventUpdate {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String updateContent;
-    private String updateType;
-    private Instant postedAt;
-
     @ManyToOne
+    @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    public EventUpdate() {}
+    @Column(nullable = false)
+    private String updateContent;
 
-    public EventUpdate(Long id, String updateContent, String updateType) {
-        this.id = id;
-        this.updateContent = updateContent;
-        this.updateType = updateType;
-    }
+    @Column(nullable = false)
+    private String updateType; // INFO, WARNING, CRITICAL
+
+    private String severityLevel = "LOW";
+
+    private LocalDateTime timestamp;
 
     @PrePersist
-    void onCreate() {
-        this.postedAt = Instant.now();
+    protected void onCreate() {
+        this.timestamp = LocalDateTime.now();
     }
-
-    // getters & setters
-    public Long getId() { return id; }
-    public Event getEvent() { return event; }
-    public void setEvent(Event event) { this.event = event; }
 }
