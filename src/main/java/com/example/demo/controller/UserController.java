@@ -1,15 +1,13 @@
-package com.example.demo.controller;
+package com.example.project.controller;
 
-import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.example.project.entity.User;
+import com.example.project.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@Tag(name = "User Controller")
 public class UserController {
 
     private final UserService userService;
@@ -20,12 +18,12 @@ public class UserController {
 
     @PostMapping("/register")
     public User register(@RequestBody User user) {
-        return userService.registerUserEntity(user);
+        return userService.register(user);
     }
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
-        return userService.getUserById(id);
+        return userService.findById(id);
     }
 
     @GetMapping

@@ -1,35 +1,33 @@
-package com.example.demo.controller;
+package com.example.project.controller;
 
-import com.example.demo.entity.EventUpdate;
-import com.example.demo.service.EventUpdateService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.example.project.entity.EventUpdate;
+import com.example.project.service.EventUpdateService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/updates")
-@Tag(name = "Event Update Controller")
 public class EventUpdateController {
 
-    private final EventUpdateService eventUpdateService;
+    private final EventUpdateService updateService;
 
-    public EventUpdateController(EventUpdateService eventUpdateService) {
-        this.eventUpdateService = eventUpdateService;
+    public EventUpdateController(EventUpdateService updateService) {
+        this.updateService = updateService;
     }
 
     @PostMapping
     public EventUpdate publish(@RequestBody EventUpdate update) {
-        return eventUpdateService.publishUpdate(update);
+        return updateService.publishUpdate(update);
     }
 
     @GetMapping("/event/{eventId}")
-    public List<EventUpdate> getByEvent(@PathVariable Long eventId) {
-        return eventUpdateService.getUpdatesForEvent(eventId);
+    public List<EventUpdate> getForEvent(@PathVariable Long eventId) {
+        return updateService.getUpdatesForEvent(eventId);
     }
 
     @GetMapping("/{id}")
-    public EventUpdate getById(@PathVariable Long id) {
-        return eventUpdateService.getUpdateById(id);
+    public EventUpdate get(@PathVariable Long id) {
+        return updateService.getUpdateById(id);
     }
 }
