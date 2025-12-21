@@ -2,26 +2,44 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Event;
 import com.example.demo.service.EventService;
-import org.springframework.http.ResponseEntity;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/events") // Base path [cite: 242]
+@RequestMapping("/api/events")
+@Tag(name = "Event Controller")
 public class EventController {
+
     private final EventService eventService;
 
     public EventController(EventService eventService) {
         this.eventService = eventService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-        // Business logic for publisher validation resides in service layer [cite: 17, 243]
-        return ResponseEntity.status(201).body(eventService.createEvent(event));
+    @PostMapping
+    public Event createEvent(@RequestBody Event event) {
+        return eventService.createEvent(event);
+    }
+
+    @PutMapping("/{id}")
+    public Event updateEvent(@PathVariable Long id, @RequestBody Event event) {
+        return eventService.updateEvent(id, event);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(eventService.getById(id)); // [cite: 245]
+    public Event getEvent(@PathVariable Long id) {
+        return eventService.getEventById(id);
+    }
+
+    @GetMapping("/active")
+    public List<Event> getActiveEvents() {
+        return eventService.getActiveEvents();
+    }
+
+    @PatchMapping("/{id}/deactivate")
+    public void deactivate(@PathVariable Long id) {
+        eventService.deactivateEvent(id);
     }
 }
