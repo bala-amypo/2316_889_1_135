@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventUpdateService {
-    EventUpdate publishUpdate(EventUpdate update);
-    List<EventUpdate> getUpdatesForEvent(Long eventId);
-    Optional<EventUpdate> getUpdateById(Long id);
-    List<EventUpdate> getAllUpdates();
+    EventUpdate publishUpdate(EventUpdate update); [cite: 208]
+    List<EventUpdate> getUpdatesForEvent(Long eventId); [cite: 209]
+    Optional<EventUpdate> getUpdateById(Long id); [cite: 210]
+    List<EventUpdate> getAllUpdates(); [cite: 211]
 }

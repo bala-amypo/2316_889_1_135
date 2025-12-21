@@ -15,31 +15,34 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     private final EventRepository eventRepository;
     private final BroadcastService broadcastService;
 
-    public EventUpdateServiceImpl(EventUpdateRepository eur, EventRepository er, BroadcastService bs) {
-        this.eventUpdateRepository = eur;
-        this.eventRepository = er;
-        this.broadcastService = bs;
+    // Strict constructor order: EventUpdateRepository, EventRepository, BroadcastService [cite: 206]
+    public EventUpdateServiceImpl(EventUpdateRepository eventUpdateRepository, 
+                                  EventRepository eventRepository, 
+                                  BroadcastService broadcastService) {
+        this.eventUpdateRepository = eventUpdateRepository;
+        this.eventRepository = eventRepository;
+        this.broadcastService = broadcastService;
     }
 
     @Override
     public EventUpdate publishUpdate(EventUpdate update) {
-        EventUpdate saved = eventUpdateRepository.save(update);
-        broadcastService.broadcastUpdate(saved.getId());
-        return saved;
+        EventUpdate savedUpdate = eventUpdateRepository.save(update); [cite: 208]
+        broadcastService.broadcastUpdate(savedUpdate.getId()); [cite: 208]
+        return savedUpdate;
     }
 
     @Override
     public List<EventUpdate> getUpdatesForEvent(Long eventId) {
-        return eventUpdateRepository.findByEventId(eventId);
+        return eventUpdateRepository.findByEventId(eventId); [cite: 209]
     }
 
     @Override
     public Optional<EventUpdate> getUpdateById(Long id) {
-        return eventUpdateRepository.findById(id);
+        return eventUpdateRepository.findById(id); [cite: 210]
     }
 
     @Override
     public List<EventUpdate> getAllUpdates() {
-        return eventUpdateRepository.findAll();
+        return eventUpdateRepository.findAll(); [cite: 211]
     }
 }
