@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -12,5 +11,12 @@ public class User {
     private String fullName;
     private String email;
     private String password;
-    private String role; // ADMIN, PUBLISHER, SUBSCRIBER
+    private String role;
+
+    // Manual setters to satisfy compiler if Lombok fails
+    public void setId(Long id) { this.id = id; }
+    public void setFullName(String fullName) { this.fullName = fullName; }
+    public void setEmail(String email) { this.email = email; }
+    public void setPassword(String password) { this.password = password; }
+    public void setRole(String role) { this.role = role; }
 }
