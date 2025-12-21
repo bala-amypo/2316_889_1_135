@@ -6,7 +6,8 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,6 +33,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() { return userRepository.findAll(); }
-    
-    // Additional interface methods implemented here...
+
+    @Override
+    public User updateUser(Long id, User user) {
+        user.setId(id);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) { return userRepository.findByEmail(email); }
 }
