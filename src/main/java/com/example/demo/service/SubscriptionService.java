@@ -1,6 +1,6 @@
-package com.example.demo.service;
+package com.example.project.service;
 
-import com.example.demo.entity.Subscription;
+import com.example.project.entity.Subscription;
 
 import java.util.List;
 
@@ -12,5 +12,7 @@ public interface SubscriptionService {
 
     List<Subscription> getSubscriptionsForUser(Long userId);
 
-    boolean checkSubscription(Long userId, Long eventId);
+    List<Subscription> getUserSubscriptions(Long userId);
+
+    boolean isSubscribed(Long userId, Long eventId);
 }
