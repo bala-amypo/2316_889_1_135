@@ -1,8 +1,11 @@
-package com.example.demo.service;
+package com.example.project.service.impl;
 
-import com.example.demo.entity.EventUpdate;
-import com.example.demo.repository.EventRepository;
-import com.example.demo.repository.EventUpdateRepository;
+import com.example.project.entity.Event;
+import com.example.project.entity.EventUpdate;
+import com.example.project.exception.ResourceNotFoundException;
+import com.example.project.repository.EventRepository;
+import com.example.project.repository.EventUpdateRepository;
+import com.example.project.service.EventUpdateService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,31 +15,35 @@ public class EventUpdateServiceImpl implements EventUpdateService {
 
     private final EventUpdateRepository eventUpdateRepository;
     private final EventRepository eventRepository;
-    private final BroadcastService broadcastService;
 
     public EventUpdateServiceImpl(EventUpdateRepository eventUpdateRepository,
-                                  EventRepository eventRepository,
-                                  BroadcastService broadcastService) {
+                                  EventRepository eventRepository) {
         this.eventUpdateRepository = eventUpdateRepository;
         this.eventRepository = eventRepository;
-        this.broadcastService = broadcastService;
     }
 
     @Override
-    public EventUpdate publishUpdate(EventUpdate update) {
-        EventUpdate saved = eventUpdateRepository.save(update);
-        broadcastService.triggerBroadcast(saved.getId());
-        return saved;
+    public EventUpdate createUpdate(Long eventId, EventUpdate update) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+
+        update.setEvent(event);
+        return eventUpdateRepository.save(update);
     }
 
     @Override
     public List<EventUpdate> getUpdatesForEvent(Long eventId) {
-        return eventUpdateRepository.findByEventId(eventId);
+        return eventUpdateRepository.findByEventIdOrderByTimestampAsc(eventId);
     }
 
     @Override
     public EventUpdate getUpdateById(Long id) {
         return eventUpdateRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Event update not found"));
+    }
+
+    @Override
+    public EventUpdate publishUpdate(EventUpdate update) {
+        return eventUpdateRepository.save(update);
     }
 }
