@@ -1,19 +1,17 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.User;
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // Constructor injection order: UserRepository, PasswordEncoder [cite: 189]
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -22,24 +20,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new BadRequestException("Email already exists");
+            throw new IllegalArgumentException("Email already exists"); // Required keyword [cite: 172, 191]
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Encrypt password [cite: 191]
         return userRepository.save(user);
     }
-
-    @Override
-    public Optional<User> findById(Long id) { return userRepository.findById(id); }
-
-    @Override
-    public List<User> getAllUsers() { return userRepository.findAll(); }
-
-    @Override
-    public User updateUser(Long id, User user) {
-        user.setId(id);
-        return userRepository.save(user);
-    }
-
-    @Override
-    public Optional<User> findByEmail(String email) { return userRepository.findByEmail(email); }
 }

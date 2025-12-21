@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/events")
+@RequestMapping("/api/events") // Base path [cite: 242]
 public class EventController {
     private final EventService eventService;
 
@@ -14,19 +14,14 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+        // Business logic for publisher validation resides in service layer [cite: 17, 243]
         return ResponseEntity.status(201).body(eventService.createEvent(event));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Event> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(eventService.getById(id));
-    }
-
-    @PatchMapping("/{id}/deactivate")
-    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
-        eventService.deactivateEvent(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(eventService.getById(id)); // [cite: 245]
     }
 }

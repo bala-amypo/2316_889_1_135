@@ -12,38 +12,28 @@ public class BroadcastServiceImpl implements BroadcastService {
     private final SubscriptionRepository subscriptionRepository;
     private final EventUpdateRepository eventUpdateRepository;
 
-    public BroadcastServiceImpl(BroadcastLogRepository blr, SubscriptionRepository sr, EventUpdateRepository eur) {
-        this.broadcastLogRepository = blr;
-        this.subscriptionRepository = sr;
-        this.eventUpdateRepository = eur;
+    // Constructor order: BroadcastLogRepository, SubscriptionRepository, EventUpdateRepository [cite: 221]
+    public BroadcastServiceImpl(BroadcastLogRepository broadcastLogRepository, 
+                                SubscriptionRepository subscriptionRepository, 
+                                EventUpdateRepository eventUpdateRepository) {
+        this.broadcastLogRepository = broadcastLogRepository;
+        this.subscriptionRepository = subscriptionRepository;
+        this.eventUpdateRepository = eventUpdateRepository;
     }
 
     @Override
     public void broadcastUpdate(Long updateId) {
-        EventUpdate update = eventUpdateRepository.findById(updateId).orElseThrow();
-        List<Subscription> subs = subscriptionRepository.findByEventId(update.getEvent().getId());
-        
-        for (Subscription sub : subs) {
+        EventUpdate update = eventUpdateRepository.findById(updateId)
+                .orElseThrow(() -> new RuntimeException("Update not found")); // [cite: 224]
+
+        List<Subscription> subscriptions = subscriptionRepository.findByEventId(update.getEvent().getId()); // [cite: 226]
+
+        for (Subscription sub : subscriptions) {
             BroadcastLog log = new BroadcastLog();
             log.setEventUpdate(update);
             log.setSubscriber(sub.getUser());
-            log.setDeliveryStatus("SENT");
+            log.setDeliveryStatus("SENT"); // Status defaults to SENT [cite: 96, 227]
             broadcastLogRepository.save(log);
         }
-    }
-
-    @Override
-    public List<BroadcastLog> getLogsForUpdate(Long updateId) {
-        return broadcastLogRepository.findByEventUpdateId(updateId);
-    }
-
-    @Override
-    public void recordDelivery(Long updateId, Long subscriberId, boolean successful) {
-        // Logic to update status to SENT or FAILED
-    }
-
-    @Override
-    public List<BroadcastLog> getAllLogs() {
-        return broadcastLogRepository.findAll();
     }
 }
