@@ -1,14 +1,35 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.EventUpdate;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.EventUpdateRepository;
+import com.example.demo.service.EventUpdateService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface EventUpdateService {
+@Service
+public class EventUpdateServiceImpl implements EventUpdateService {
 
-    EventUpdate publishUpdate(EventUpdate update);
+    private final EventUpdateRepository eventUpdateRepository;
 
-    List<EventUpdate> getUpdatesForEvent(Long eventId);
+    public EventUpdateServiceImpl(EventUpdateRepository eventUpdateRepository) {
+        this.eventUpdateRepository = eventUpdateRepository;
+    }
 
-    EventUpdate getUpdateById(Long id);
+    @Override
+    public EventUpdate publishUpdate(EventUpdate update) {
+        return eventUpdateRepository.save(update);
+    }
+
+    @Override
+    public List<EventUpdate> getUpdatesForEvent(Long eventId) {
+        return eventUpdateRepository.findByEventId(eventId);
+    }
+
+    @Override
+    public EventUpdate getUpdateById(Long id) {
+        return eventUpdateRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Event update not found"));
+    }
 }
