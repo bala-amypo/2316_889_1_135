@@ -2,26 +2,34 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Table(name = "users") // Table name "users" [cite: 38]
+@Data
+@NoArgsConstructor // No-args constructor [cite: 31]
+@AllArgsConstructor // All fields constructor [cite: 31]
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String fullName;
-    private String email;
-    private String password;
-    private String role;
+    private Long id; // Long, PK, auto-generated [cite: 25]
 
-    // Manual methods to fix AuthController errors
-    public void setFullName(String fullName) { this.fullName = fullName; }
-    public void setEmail(String email) { this.email = email; }
-    public void setPassword(String password) { this.password = password; }
-    public void setRole(String role) { this.role = role; }
-    public void setId(Long id) { this.id = id; }
-    
-    public String getEmail() { return email; }
-    public String getPassword() { return password; }
+    @Column(nullable = false)
+    private String fullName; // Required [cite: 26]
+
+    @Column(nullable = false, unique = true)
+    private String email; // Required, unique [cite: 27]
+
+    @Column(nullable = false)
+    private String password; // Required [cite: 28]
+
+    @Column(nullable = false)
+    private String role = "SUBSCRIBER"; // Defaults to SUBSCRIBER [cite: 37]
+
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now(); // Auto-populated [cite: 36]
+    }
 }
