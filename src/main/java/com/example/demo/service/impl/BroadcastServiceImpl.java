@@ -12,13 +12,22 @@ import java.util.List;
 @Service
 public class BroadcastServiceImpl implements BroadcastService {
 
-    private final BroadcastLogRepository broadcastLogRepository;
     private final EventUpdateRepository eventUpdateRepository;
+    private final BroadcastLogRepository broadcastLogRepository;
 
-    public BroadcastServiceImpl(BroadcastLogRepository broadcastLogRepository,
-                                EventUpdateRepository eventUpdateRepository) {
-        this.broadcastLogRepository = broadcastLogRepository;
+    public BroadcastServiceImpl(EventUpdateRepository eventUpdateRepository,
+                                BroadcastLogRepository broadcastLogRepository) {
         this.eventUpdateRepository = eventUpdateRepository;
+        this.broadcastLogRepository = broadcastLogRepository;
+    }
+
+    @Override
+    public void broadcastUpdate(Long updateId) {
+        EventUpdate update = eventUpdateRepository.findById(updateId).orElseThrow();
+        BroadcastLog log = new BroadcastLog();
+        log.setEventUpdate(update);
+        log.setDeliveryStatus("SENT");
+        broadcastLogRepository.save(log);
     }
 
     @Override
