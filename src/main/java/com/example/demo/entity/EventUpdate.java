@@ -14,9 +14,7 @@ public class EventUpdate {
     private Event event;
 
     private String updateContent;
-
     private String updateType;
-
     private LocalDateTime postedAt;
 
     @PrePersist
@@ -27,15 +25,18 @@ public class EventUpdate {
         }
     }
 
-    public Event getEvent() {
-        return event;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public LocalDateTime getTimestamp() {
-        return postedAt;
-    }
+    public Event getEvent() { return event; }
+    public void setEvent(Event event) { this.event = event; }
 
-    public String getSeverityLevel() {
-        return updateType;
-    }
+    public String getUpdateContent() { return updateContent; }
+    public void setUpdateContent(String updateContent) { this.updateContent = updateContent; }
+
+    public String getUpdateType() { return updateType; }
+    public void setUpdateType(String updateType) { this.updateType = updateType; }
+
+    public LocalDateTime getTimestamp() { return postedAt; }
+    public String getSeverityLevel() { return updateType; }
 }
