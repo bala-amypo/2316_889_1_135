@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 public class Event {
@@ -18,24 +18,27 @@ public class Event {
     @ManyToOne
     private User publisher;
 
-    private Boolean isActive = true;
+    private boolean isActive = true;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime lastUpdatedAt;
+    private Instant createdAt;
+    private Instant lastUpdatedAt;
 
     @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
+    public void onCreate() {
+        this.createdAt = Instant.now();
         this.lastUpdatedAt = this.createdAt;
     }
 
     @PreUpdate
     public void onUpdate() {
-        this.lastUpdatedAt = LocalDateTime.now();
+        this.lastUpdatedAt = Instant.now();
     }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean active) { this.isActive = active; }
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -52,9 +55,6 @@ public class Event {
     public User getPublisher() { return publisher; }
     public void setPublisher(User publisher) { this.publisher = publisher; }
 
-    public Boolean getIsActive() { return isActive; }
-    public void setActive(boolean active) { this.isActive = active; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getLastUpdatedAt() { return lastUpdatedAt; }
+    public Instant getCreatedAt() { return createdAt; }
+    public Instant getLastUpdatedAt() { return lastUpdatedAt; }
 }
