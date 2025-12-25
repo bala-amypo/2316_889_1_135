@@ -17,7 +17,7 @@ public class BroadcastLog {
     private User subscriber;
 
     @Enumerated(EnumType.STRING)
-    private DeliveryStatus deliveryStatus;
+    private DeliveryStatus deliveryStatus = DeliveryStatus.SENT;
 
     private Instant sentAt;
 
