@@ -23,14 +23,18 @@ public class BroadcastLog {
 
     @PrePersist
     public void onCreate() {
-        if (deliveryStatus == null) {
-            deliveryStatus = DeliveryStatus.SENT;
+        this.sentAt = Instant.now();
+        if (this.deliveryStatus == null) {
+            this.deliveryStatus = DeliveryStatus.SENT;
         }
-        sentAt = Instant.now();
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public EventUpdate getEventUpdate() {
