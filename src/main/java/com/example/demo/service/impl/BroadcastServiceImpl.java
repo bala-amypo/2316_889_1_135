@@ -7,6 +7,8 @@ import com.example.demo.repository.EventUpdateRepository;
 import com.example.demo.service.BroadcastService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BroadcastServiceImpl implements BroadcastService {
 
@@ -26,5 +28,10 @@ public class BroadcastServiceImpl implements BroadcastService {
         log.setEventUpdate(update);
         log.setDeliveryStatus(success ? "SENT" : "FAILED");
         broadcastLogRepository.save(log);
+    }
+
+    @Override
+    public List<BroadcastLog> getLogsForUpdate(Long updateId) {
+        return broadcastLogRepository.findByEventUpdateId(updateId);
     }
 }

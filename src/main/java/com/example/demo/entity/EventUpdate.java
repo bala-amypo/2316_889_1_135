@@ -15,11 +15,11 @@ public class EventUpdate {
 
     private String updateContent;
     private String updateType;
-    private LocalDateTime postedAt;
+    private LocalDateTime timestamp;
 
     @PrePersist
     public void onCreate() {
-        this.postedAt = LocalDateTime.now();
+        this.timestamp = LocalDateTime.now();
         if (this.updateType == null) {
             this.updateType = "INFO";
         }
@@ -37,6 +37,6 @@ public class EventUpdate {
     public String getUpdateType() { return updateType; }
     public void setUpdateType(String updateType) { this.updateType = updateType; }
 
-    public LocalDateTime getTimestamp() { return postedAt; }
+    public LocalDateTime getTimestamp() { return timestamp; }
     public String getSeverityLevel() { return updateType; }
 }

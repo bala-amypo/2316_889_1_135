@@ -23,10 +23,14 @@ public class EventUpdateServiceImpl implements EventUpdateService {
     }
 
     @Override
+    public EventUpdate publishUpdate(EventUpdate update) {
+        return eventUpdateRepository.save(update);
+    }
+
+    @Override
     public EventUpdate publishUpdate(Long eventId, EventUpdate update) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
-
         update.setEvent(event);
         return eventUpdateRepository.save(update);
     }
