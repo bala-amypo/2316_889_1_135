@@ -19,7 +19,6 @@ public class SwaggerConfig {
                 .servers(List.of(
                         new Server().url("https://9460.pro604cr.amypo.ai/")
                 ))
-                // JWT Bearer configuration required by testcase + security config
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
                 .components(
                         new Components().addSecuritySchemes(
