@@ -17,53 +17,24 @@ public class EventUpdate {
 
     private String updateType;
 
-    private LocalDateTime postedAt;
+    private LocalDateTime timestamp;
+
+    @Enumerated(EnumType.STRING)
+    private SeverityLevel severityLevel;
 
     @PrePersist
-    protected void onCreate() {
-        this.postedAt = LocalDateTime.now();
+    public void onCreate() {
+        this.timestamp = LocalDateTime.now();
+        if (this.severityLevel == null) {
+            this.severityLevel = SeverityLevel.LOW;
+        }
     }
 
-    public EventUpdate() {
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-    public String getUpdateContent() {
-        return updateContent;
-    }
-
-    public void setUpdateContent(String updateContent) {
-        this.updateContent = updateContent;
-    }
-
-    public String getUpdateType() {
-        return updateType;
-    }
-
-    public void setUpdateType(String updateType) {
-        this.updateType = updateType;
-    }
-
-    public LocalDateTime getPostedAt() {
-        return postedAt;
-    }
-
-    public void setPostedAt(LocalDateTime postedAt) {
-        this.postedAt = postedAt;
+    public SeverityLevel getSeverityLevel() {
+        return severityLevel;
     }
 }
