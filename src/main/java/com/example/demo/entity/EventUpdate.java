@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 public class EventUpdate {
@@ -14,29 +14,60 @@ public class EventUpdate {
     private Event event;
 
     private String updateContent;
+
     private String updateType;
-    private LocalDateTime timestamp;
+
+    @Enumerated(EnumType.STRING)
+    private SeverityLevel severityLevel = SeverityLevel.LOW;
+
+    private Instant timestamp;
 
     @PrePersist
     public void onCreate() {
-        this.timestamp = LocalDateTime.now();
-        if (this.updateType == null) {
-            this.updateType = "INFO";
-        }
+        this.timestamp = Instant.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Event getEvent() { return event; }
-    public void setEvent(Event event) { this.event = event; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getUpdateContent() { return updateContent; }
-    public void setUpdateContent(String updateContent) { this.updateContent = updateContent; }
+    public Event getEvent() {
+        return event;
+    }
 
-    public String getUpdateType() { return updateType; }
-    public void setUpdateType(String updateType) { this.updateType = updateType; }
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public String getSeverityLevel() { return updateType; }
+    public String getUpdateContent() {
+        return updateContent;
+    }
+
+    public void setUpdateContent(String updateContent) {
+        this.updateContent = updateContent;
+    }
+
+    public String getUpdateType() {
+        return updateType;
+    }
+
+    public void setUpdateType(String updateType) {
+        this.updateType = updateType;
+    }
+
+    public SeverityLevel getSeverityLevel() {
+        return severityLevel;
+    }
+
+    public void setSeverityLevel(SeverityLevel severityLevel) {
+        this.severityLevel = severityLevel;
+    }
+
+    public Instant getTimestamp() {
+        return timestamp;
+    }
 }

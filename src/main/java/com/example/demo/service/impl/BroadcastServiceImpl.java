@@ -1,9 +1,9 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.BroadcastLog;
-import com.example.demo.entity.EventUpdate;
+import com.example.demo.entity.*;
 import com.example.demo.repository.BroadcastLogRepository;
 import com.example.demo.repository.EventUpdateRepository;
+import com.example.demo.repository.SubscriptionRepository;
 import com.example.demo.service.BroadcastService;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +13,14 @@ import java.util.List;
 public class BroadcastServiceImpl implements BroadcastService {
 
     private final EventUpdateRepository eventUpdateRepository;
+    private final SubscriptionRepository subscriptionRepository;
     private final BroadcastLogRepository broadcastLogRepository;
 
     public BroadcastServiceImpl(EventUpdateRepository eventUpdateRepository,
+                                SubscriptionRepository subscriptionRepository,
                                 BroadcastLogRepository broadcastLogRepository) {
         this.eventUpdateRepository = eventUpdateRepository;
+        this.subscriptionRepository = subscriptionRepository;
         this.broadcastLogRepository = broadcastLogRepository;
     }
 
@@ -26,7 +29,7 @@ public class BroadcastServiceImpl implements BroadcastService {
         EventUpdate update = eventUpdateRepository.findById(updateId).orElseThrow();
         BroadcastLog log = new BroadcastLog();
         log.setEventUpdate(update);
-        log.setDeliveryStatus("SENT");
+        log.setDeliveryStatus(DeliveryStatus.SENT);
         broadcastLogRepository.save(log);
     }
 
@@ -35,7 +38,7 @@ public class BroadcastServiceImpl implements BroadcastService {
         EventUpdate update = eventUpdateRepository.findById(updateId).orElseThrow();
         BroadcastLog log = new BroadcastLog();
         log.setEventUpdate(update);
-        log.setDeliveryStatus(success ? "SENT" : "FAILED");
+        log.setDeliveryStatus(success ? DeliveryStatus.SENT : DeliveryStatus.FAILED);
         broadcastLogRepository.save(log);
     }
 
