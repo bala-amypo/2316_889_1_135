@@ -1,15 +1,15 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.EventRequest;
 import com.example.demo.entity.Event;
+import com.example.demo.entity.User;
 import com.example.demo.service.EventService;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
-@Tag(name = "Event Controller")
 public class EventController {
 
     private final EventService eventService;
@@ -19,22 +19,38 @@ public class EventController {
     }
 
     @PostMapping
-    public Event createEvent(@RequestBody Event event) {
+    public Event create(@RequestBody EventRequest request) {
+        Event event = new Event();
+        User publisher = new User();
+        publisher.setId(request.publisherId);
+
+        event.setTitle(request.title);
+        event.setDescription(request.description);
+        event.setLocation(request.location);
+        event.setCategory(request.category);
+        event.setPublisher(publisher);
+
         return eventService.createEvent(event);
     }
 
     @PutMapping("/{id}")
-    public Event updateEvent(@PathVariable Long id, @RequestBody Event event) {
+    public Event update(@PathVariable Long id, @RequestBody EventRequest request) {
+        Event event = new Event();
+        event.setTitle(request.title);
+        event.setDescription(request.description);
+        event.setLocation(request.location);
+        event.setCategory(request.category);
+
         return eventService.updateEvent(id, event);
     }
 
     @GetMapping("/{id}")
-    public Event getEvent(@PathVariable Long id) {
-        return eventService.getEventById(id);
+    public Event get(@PathVariable Long id) {
+        return eventService.getById(id);
     }
 
     @GetMapping("/active")
-    public List<Event> getActiveEvents() {
+    public List<Event> active() {
         return eventService.getActiveEvents();
     }
 
