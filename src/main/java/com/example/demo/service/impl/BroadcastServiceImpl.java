@@ -24,17 +24,18 @@ public class BroadcastServiceImpl implements BroadcastService {
 
     @Override
     public void broadcastUpdate(Long eventUpdateId) {
-        EventUpdate update = eventUpdateRepository.findById(eventUpdateId).orElseThrow();
+        EventUpdate update =
+                eventUpdateRepository.findById(eventUpdateId).orElseThrow();
 
-        List<User> subscribers =
-                subscriptionRepository.findSubscribersByEventId(
+        List<Subscription> subscriptions =
+                subscriptionRepository.findByEventId(
                         update.getEvent().getId()
                 );
 
-        for (User user : subscribers) {
+        for (Subscription sub : subscriptions) {
             BroadcastLog log = new BroadcastLog();
             log.setEventUpdate(update);
-            log.setSubscriber(user);
+            log.setSubscriber(sub.getUser());
             log.setDeliveryStatus(DeliveryStatus.SENT);
 
             broadcastLogRepository.save(log);
