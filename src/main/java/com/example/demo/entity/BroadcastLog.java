@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 
 @Entity
 public class BroadcastLog {
@@ -18,12 +19,18 @@ public class BroadcastLog {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 
-    public Long getId() {
-        return id;
+    private Instant sentAt;
+
+    @PrePersist
+    public void onCreate() {
+        if (deliveryStatus == null) {
+            deliveryStatus = DeliveryStatus.SENT;
+        }
+        sentAt = Instant.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getId() {
+        return id;
     }
 
     public EventUpdate getEventUpdate() {
@@ -48,5 +55,9 @@ public class BroadcastLog {
 
     public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
         this.deliveryStatus = deliveryStatus;
+    }
+
+    public Instant getSentAt() {
+        return sentAt;
     }
 }

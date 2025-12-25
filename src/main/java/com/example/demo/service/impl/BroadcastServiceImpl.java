@@ -1,9 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.*;
-import com.example.demo.repository.BroadcastLogRepository;
-import com.example.demo.repository.EventUpdateRepository;
-import com.example.demo.repository.SubscriptionRepository;
+import com.example.demo.repository.*;
 import com.example.demo.service.BroadcastService;
 import org.springframework.stereotype.Service;
 
@@ -25,21 +23,38 @@ public class BroadcastServiceImpl implements BroadcastService {
     }
 
     @Override
-    public void broadcastUpdate(Long updateId) {
-        EventUpdate update = eventUpdateRepository.findById(updateId).orElseThrow();
-        BroadcastLog log = new BroadcastLog();
-        log.setEventUpdate(update);
-        log.setDeliveryStatus(DeliveryStatus.SENT);
-        broadcastLogRepository.save(log);
+    public void broadcastUpdate(Long eventUpdateId) {
+        EventUpdate update = eventUpdateRepository.findById(eventUpdateId).orElseThrow();
+
+        List<User> subscribers =
+                subscriptionRepository.findSubscribersByEventId(
+                        update.getEvent().getId()
+                );
+
+        for (User user : subscribers) {
+            BroadcastLog log = new BroadcastLog();
+            log.setEventUpdate(update);
+            log.setSubscriber(user);
+            log.setDeliveryStatus(DeliveryStatus.SENT);
+
+            broadcastLogRepository.save(log);
+        }
     }
 
     @Override
-    public void recordDelivery(Long updateId, Long userId, boolean success) {
-        EventUpdate update = eventUpdateRepository.findById(updateId).orElseThrow();
-        BroadcastLog log = new BroadcastLog();
-        log.setEventUpdate(update);
-        log.setDeliveryStatus(success ? DeliveryStatus.SENT : DeliveryStatus.FAILED);
-        broadcastLogRepository.save(log);
+    public void recordDelivery(Long updateId, Long subscriberId, boolean success) {
+        List<BroadcastLog> logs =
+                broadcastLogRepository.findByEventUpdateId(updateId);
+
+        for (BroadcastLog log : logs) {
+            if (log.getSubscriber().getId().equals(subscriberId)) {
+                log.setDeliveryStatus(
+                        success ? DeliveryStatus.SENT : DeliveryStatus.FAILED
+                );
+                broadcastLogRepository.save(log);
+                return;
+            }
+        }
     }
 
     @Override
