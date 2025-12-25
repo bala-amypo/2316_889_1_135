@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "event_updates")
@@ -12,63 +12,32 @@ public class EventUpdate {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "event_id")
     private Event event;
 
     private String updateContent;
 
     private String updateType; // INFO / WARNING / CRITICAL
 
-    private LocalDateTime postedAt;
-
-    public EventUpdate() {
-    }
-
-    public EventUpdate(Long id, Event event, String updateContent, String updateType) {
-        this.id = id;
-        this.event = event;
-        this.updateContent = updateContent;
-        this.updateType = updateType;
-    }
+    private Instant postedAt;
 
     @PrePersist
     public void onCreate() {
-        this.postedAt = LocalDateTime.now();
+        this.postedAt = Instant.now();
     }
 
-    public Long getId() {
-        return id;
-    }
- 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    /* getters & setters */
 
-    public Event getEvent() {
-        return event;
-    }
- 
-    public void setEvent(Event event) {
-        this.event = event;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getUpdateContent() {
-        return updateContent;
-    }
- 
-    public void setUpdateContent(String updateContent) {
-        this.updateContent = updateContent;
-    }
+    public Event getEvent() { return event; }
+    public void setEvent(Event event) { this.event = event; }
 
-    public String getUpdateType() {
-        return updateType;
-    }
- 
-    public void setUpdateType(String updateType) {
-        this.updateType = updateType;
-    }
+    public String getUpdateContent() { return updateContent; }
+    public void setUpdateContent(String updateContent) { this.updateContent = updateContent; }
 
-    public LocalDateTime getPostedAt() {
-        return postedAt;
-    }
+    public String getUpdateType() { return updateType; }
+    public void setUpdateType(String updateType) { this.updateType = updateType; }
+
+    public Instant getPostedAt() { return postedAt; }
 }
