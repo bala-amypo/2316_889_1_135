@@ -17,24 +17,25 @@ public class EventUpdate {
 
     private String updateType;
 
-    private LocalDateTime timestamp;
-
-    @Enumerated(EnumType.STRING)
-    private SeverityLevel severityLevel;
+    private LocalDateTime postedAt;
 
     @PrePersist
     public void onCreate() {
-        this.timestamp = LocalDateTime.now();
-        if (this.severityLevel == null) {
-            this.severityLevel = SeverityLevel.LOW;
+        this.postedAt = LocalDateTime.now();
+        if (this.updateType == null) {
+            this.updateType = "INFO";
         }
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public Event getEvent() {
+        return event;
     }
 
-    public SeverityLevel getSeverityLevel() {
-        return severityLevel;
+    public LocalDateTime getTimestamp() {
+        return postedAt;
+    }
+
+    public String getSeverityLevel() {
+        return updateType;
     }
 }

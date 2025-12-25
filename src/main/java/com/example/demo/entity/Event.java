@@ -27,7 +27,7 @@ public class Event {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        this.lastUpdatedAt = LocalDateTime.now();
+        this.lastUpdatedAt = this.createdAt;
     }
 
     @PreUpdate
@@ -35,11 +35,13 @@ public class Event {
         this.lastUpdatedAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Boolean getIsActive() { return isActive; }
-    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
+    public Boolean getIsActive() {
+        return isActive;
+    }
 
     public LocalDateTime getLastUpdatedAt() {
         return lastUpdatedAt;

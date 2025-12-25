@@ -31,4 +31,8 @@ public class BroadcastLog {
     public void setId(long id) {
         this.id = id;
     }
+
+    public String getDeliveryStatus() {
+        return deliveryStatus;
+    }
 }
