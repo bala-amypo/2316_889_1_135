@@ -16,11 +16,13 @@ public class BroadcastController {
         this.broadcastService = broadcastService;
     }
 
+    // POST /trigger/{updateId} – Manual broadcast trigger
     @PostMapping("/trigger/{updateId}")
     public void trigger(@PathVariable Long updateId) {
         broadcastService.broadcastUpdate(updateId);
     }
 
+    // GET /logs/{updateId} – Get logs
     @GetMapping("/logs/{updateId}")
     public List<BroadcastLog> logs(@PathVariable Long updateId) {
         return broadcastService.getLogsForUpdate(updateId);

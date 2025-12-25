@@ -19,19 +19,27 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+    // POST /register
     @PostMapping("/register")
     public AuthResponse register(@RequestBody User user) {
         User saved = userService.register(user);
         String token = jwtUtil.generateToken(
-                saved.getId(), saved.getEmail(), saved.getRole().name());
+                saved.getId(),
+                saved.getEmail(),
+                saved.getRole().name()
+        );
         return new AuthResponse(token, saved.getId(), saved.getEmail(), saved.getRole().name());
     }
 
+    // POST /login
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
         User user = userService.findByEmail(request.email);
         String token = jwtUtil.generateToken(
-                user.getId(), user.getEmail(), user.getRole().name());
+                user.getId(),
+                user.getEmail(),
+                user.getRole().name()
+        );
         return new AuthResponse(token, user.getId(), user.getEmail(), user.getRole().name());
     }
 }

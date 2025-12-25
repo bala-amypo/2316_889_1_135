@@ -18,12 +18,13 @@ public class EventUpdateController {
         this.eventUpdateService = eventUpdateService;
     }
 
+    // POST / – Publish update
     @PostMapping
     public EventUpdate publish(@RequestBody EventUpdateRequest request) {
-        EventUpdate update = new EventUpdate();
         Event event = new Event();
         event.setId(request.eventId);
 
+        EventUpdate update = new EventUpdate();
         update.setEvent(event);
         update.setUpdateContent(request.updateContent);
         update.setUpdateType(request.updateType);
@@ -31,11 +32,13 @@ public class EventUpdateController {
         return eventUpdateService.publishUpdate(update);
     }
 
+    // GET /event/{eventId} – Get updates for event
     @GetMapping("/event/{eventId}")
-    public List<EventUpdate> getByEvent(@PathVariable Long eventId) {
+    public List<EventUpdate> getForEvent(@PathVariable Long eventId) {
         return eventUpdateService.getUpdatesForEvent(eventId);
     }
 
+    // GET /{id} – Get update by ID
     @GetMapping("/{id}")
     public EventUpdate getById(@PathVariable Long id) {
         return eventUpdateService.getUpdateById(id);

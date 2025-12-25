@@ -18,6 +18,7 @@ public class EventController {
         this.eventService = eventService;
     }
 
+    // POST / – Create event
     @PostMapping
     public Event create(@RequestBody EventRequest request) {
         Event event = new Event();
@@ -33,8 +34,11 @@ public class EventController {
         return eventService.createEvent(event);
     }
 
+    // PUT /{id} – Update event
     @PutMapping("/{id}")
-    public Event update(@PathVariable Long id, @RequestBody EventRequest request) {
+    public Event update(@PathVariable Long id,
+                        @RequestBody EventRequest request) {
+
         Event event = new Event();
         event.setTitle(request.title);
         event.setDescription(request.description);
@@ -44,16 +48,19 @@ public class EventController {
         return eventService.updateEvent(id, event);
     }
 
+    // GET /{id} – Get event
     @GetMapping("/{id}")
     public Event get(@PathVariable Long id) {
         return eventService.getById(id);
     }
 
+    // GET /active – List active events
     @GetMapping("/active")
-    public List<Event> active() {
+    public List<Event> activeEvents() {
         return eventService.getActiveEvents();
     }
 
+    // PATCH /{id}/deactivate – Deactivate
     @PatchMapping("/{id}/deactivate")
     public void deactivate(@PathVariable Long id) {
         eventService.deactivateEvent(id);
