@@ -1,10 +1,9 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "event_updates")
 public class EventUpdate {
 
     @Id
@@ -16,28 +15,69 @@ public class EventUpdate {
 
     private String updateContent;
 
-    private String updateType; // INFO / WARNING / CRITICAL
+    private String updateType;
 
-    private Instant postedAt;
+    private LocalDateTime timestamp;
+
+    @Enumerated(EnumType.STRING)
+    private SeverityLevel severityLevel;
 
     @PrePersist
-    public void onCreate() {
-        this.postedAt = Instant.now();
+    protected void onCreate() {
+        this.timestamp = LocalDateTime.now();
+        if (this.severityLevel == null) {
+            this.severityLevel = SeverityLevel.LOW;
+        }
     }
 
-    /* getters & setters */
+    public EventUpdate() {
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Event getEvent() { return event; }
-    public void setEvent(Event event) { this.event = event; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getUpdateContent() { return updateContent; }
-    public void setUpdateContent(String updateContent) { this.updateContent = updateContent; }
+    public Event getEvent() {
+        return event;
+    }
 
-    public String getUpdateType() { return updateType; }
-    public void setUpdateType(String updateType) { this.updateType = updateType; }
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 
-    public Instant getPostedAt() { return postedAt; }
+    public String getUpdateContent() {
+        return updateContent;
+    }
+
+    public void setUpdateContent(String updateContent) {
+        this.updateContent = updateContent;
+    }
+
+    public String getUpdateType() {
+        return updateType;
+    }
+
+    public void setUpdateType(String updateType) {
+        this.updateType = updateType;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public SeverityLevel getSeverityLevel() {
+        return severityLevel;
+    }
+
+    public void setSeverityLevel(SeverityLevel severityLevel) {
+        this.severityLevel = severityLevel;
+    }
 }
